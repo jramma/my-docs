@@ -8,7 +8,7 @@
 
 :root {
     --sl-font: 'Open Sans', serif;
-    --background: oklch(96.211% 0.05671 95.353 / 0.594);
+    --background: oklch(96.211% 0.05671 95.353 / 0.233);
     --secondary-background: oklch(100% 0 0);
     --foreground: oklch(0% 0 0);
     --secondary-foreground: oklch(0% 0 0);
@@ -51,32 +51,6 @@
     --chart-active-dot: #fff;
 }
 
-/* Mapeo de variables para Tailwind */
-@theme inline {
-    --color-main: var(--main);
-    --color-background: var(--background);
-    --color-secondary-background: var(--secondary-background);
-    --color-foreground: var(--foreground);
-    --color-main-foreground: var(--main-foreground);
-    --color-border: var(--border);
-    --color-overlay: var(--overlay);
-    --color-ring: var(--ring);
-    --color-chart-1: var(--chart-1);
-    --color-chart-2: var(--chart-2);
-    --color-chart-3: var(--chart-3);
-    --color-chart-4: var(--chart-4);
-    --color-chart-5: var(--chart-5);
-    --code-background: var(--code-background);
-    --spacing-boxShadowX: 4px;
-    --spacing-boxShadowY: 4px;
-    --spacing-reverseBoxShadowX: -4px;
-    --spacing-reverseBoxShadowY: -4px;
-    --radius-base: 5px;
-    --shadow-shadow: var(--shadow);
-    --font-weight-base: 500;
-    --font-weight-heading: 700;
-}
-
 
 :root,
 ::backdrop {
@@ -101,7 +75,7 @@
     --sl-color-text-accent: var(--chart-2);
     --sl-color-text-invert: var(--foreground);
     --sl-color-bg: var(--background);
-    --sl-color-bg-nav: var(--background);
+    --sl-color-bg-nav: var(--secondary-background);
     --sl-color-bg-sidebar: var(--background);
     --sl-color-bg-inline-code: var(--secondary-background);
     --sl-color-bg-accent: var(--main);
@@ -237,5 +211,9 @@ li a svg {
 
 li a {
     color: var(--foreground) !important;
+}
 
+button.sl-flex {
+    background-color: transparent !important;
+    box-shadow: none;
 }
