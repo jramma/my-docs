@@ -1,6 +1,7 @@
 ---
-title: 🐚 BASH
+title: BASH
 description: A guide to use bash.
+lastUpdated: 2026-06-26
 ---
 
 ## 📁 NAVEGACIÓN Y ARCHIVOS

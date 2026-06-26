@@ -1,0 +1,90 @@
+---
+title: SSH
+description: Genera y gestiona claves SSH. Conexiones seguras a servidores en pocos pasos.
+lastUpdated: 2026-06-26
+---
+
+Para generar un par de claves SSH y mostrar la clave pública con `cat`, sigue estos pasos:
+
+## 1. **Generar claves SSH**
+
+```bash
+# Generar par de claves RSA (recomendado)
+ssh-keygen -t rsa -b 4096 -C "hola@casset.cat"
+
+# O para ED25519 (más moderna y segura)
+ssh-keygen -t ed25519 -C "hola@casset.cat"
+```
+
+Durante la generación te preguntará:
+
+- **Donde guardar**: Presiona Enter para la ubicación por defecto (`~/.ssh/id_rsa`)
+- **Passphrase**: Opcional, añade una contraseña extra de seguridad
+
+## 2. **Mostrar la clave pública con cat**
+
+```bash
+# Para RSA
+cat ~/.ssh/id_rsa.pub
+
+# Para ED25519
+cat ~/.ssh/id_ed25519.pub
+```
+
+## 3. **Copiar la clave al portapapeles**
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs>
+  <TabItem label="Linux">
+
+```bash
+# Con xclip
+cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
+
+# O con xsel
+cat ~/.ssh/id_rsa.pub | xsel --clipboard --input
+```
+
+  </TabItem>
+  <TabItem label="macOS">
+
+```bash
+cat ~/.ssh/id_rsa.pub | pbcopy
+```
+
+  </TabItem>
+  <TabItem label="Windows (Git Bash)">
+
+```bash
+cat ~/.ssh/id_rsa.pub | clip
+```
+
+  </TabItem>
+</Tabs>
+
+## 4. **Comandos útiles adicionales**
+
+**Verificar que se generaron correctamente:**
+
+```bash
+ls -la ~/.ssh/
+```
+
+**Copiar automáticamente a un servidor remoto:**
+
+```bash
+ssh-copy-id usuario@servidor
+```
+
+**Comprobar conexión SSH:**
+
+```bash
+ssh -T git@github.com  # Para GitHub
+```
+
+## Notas importantes
+
+- **Nunca compartas tu clave privada** (`id_rsa` o `id_ed25519`)
+- Solo la clave **pública** (archivo `.pub`) es la que debes compartir
+- Si usas Windows, asegúrate de ejecutar los comandos en Git Bash o WSL

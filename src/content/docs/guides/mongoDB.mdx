@@ -1,0 +1,386 @@
+---
+title: MongoDB
+description: Comandos esenciales de MongoDB. Gestión de bases de datos, colecciones y consultas rápidas.
+lastUpdated: 2026-06-26
+---
+
+MongoDB es una base de datos NoSQL orientada a documentos. Aquí tienes los comandos esenciales.
+
+---
+
+## Instalación
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs>
+  <TabItem label="Debian/Ubuntu">
+
+```bash
+# Importar clave GPG
+wget -qO - https://www.mongodb.org/static/pgp/server-7.0.asc | sudo apt-key add -
+
+# Añadir repositorio
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+
+# Instalar
+sudo apt update
+sudo apt install mongodb-org
+sudo systemctl enable --now mongod
+```
+
+  </TabItem>
+  <TabItem label="Arch Linux">
+
+```bash
+sudo pacman -S mongodb
+sudo systemctl enable --now mongodb
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Acceso a MongoDB
+
+```bash
+# Acceder al shell de MongoDB
+mongosh
+
+# Acceder con autenticación
+mongosh --username usuario --authenticationDatabase admin
+
+# Conectar a un host específico
+mongosh --host localhost --port 27017
+```
+
+---
+
+## Comandos básicos del shell
+
+```javascript
+// Ver todas las bases de datos
+show dbs
+
+// Usar / crear base de datos
+use nombre_bd
+
+// Ver colecciones en la base actual
+show collections
+
+// Ver la base de datos actual
+db
+
+// Salir del shell
+exit
+```
+
+---
+
+## Gestión de bases de datos
+
+```javascript
+// Crear base de datos (se crea al insertar datos)
+use nombre_bd
+db.crear.insertOne({ nombre: "test" })
+
+// Eliminar base de datos
+db.dropDatabase()
+
+// Ver estadísticas de la base
+db.stats()
+```
+
+---
+
+## Gestión de colecciones (tablas)
+
+```javascript
+// Crear colección explícitamente
+db.createCollection("usuarios")
+
+// Crear colección con opciones (tamaño fijo)
+db.createCollection("logs", { capped: true, size: 100000 })
+
+// Ver colecciones
+show collections
+
+// Eliminar colección
+db.usuarios.drop()
+
+// Renombrar colección
+db.usuarios.renameCollection("clientes")
+```
+
+---
+
+## Operaciones CRUD
+
+### Insertar documentos
+
+```javascript
+// Insertar un documento
+db.usuarios.insertOne({
+    nombre: "Juan Pérez",
+    email: "juan@email.com",
+    edad: 30,
+    activo: true
+})
+
+// Insertar varios documentos
+db.usuarios.insertMany([
+    { nombre: "Ana", email: "ana@email.com", edad: 25 },
+    { nombre: "Carlos", email: "carlos@email.com", edad: 35 }
+])
+```
+
+### Leer documentos
+
+```javascript
+// Todos los documentos
+db.usuarios.find()
+
+// Con formato legible
+db.usuarios.find().pretty()
+
+// Con filtro
+db.usuarios.find({ edad: 30 })
+
+// Con operadores
+db.usuarios.find({ edad: { $gt: 25 } })  // mayor que
+db.usuarios.find({ edad: { $gte: 25 } }) // mayor o igual
+db.usuarios.find({ edad: { $lt: 30 } })  // menor que
+db.usuarios.find({ edad: { $in: [25, 30] } }) // en lista
+
+// Búsqueda por texto
+db.usuarios.find({ nombre: /Juan/ })
+
+// Un solo documento
+db.usuarios.findOne({ email: "juan@email.com" })
+
+// Contar documentos
+db.usuarios.countDocuments({ edad: 30 })
+
+// Ordenar
+db.usuarios.find().sort({ edad: -1 }) // descendente
+
+// Limitar y saltar (paginación)
+db.usuarios.find().limit(10).skip(20)
+
+// Solo ciertos campos
+db.usuarios.find({}, { nombre: 1, email: 1, _id: 0 })
+```
+
+### Actualizar documentos
+
+```javascript
+// Actualizar un documento
+db.usuarios.updateOne(
+    { email: "juan@email.com" },
+    { $set: { edad: 31, activo: false } }
+)
+
+// Actualizar varios documentos
+db.usuarios.updateMany(
+    { edad: { $lt: 30 } },
+    { $set: { activo: false } }
+)
+
+// Incrementar valor numérico
+db.usuarios.updateOne(
+    { email: "juan@email.com" },
+    { $inc: { edad: 1 } }
+)
+
+// Añadir a un array
+db.usuarios.updateOne(
+    { email: "juan@email.com" },
+    { $push: { tags: "premium" } }
+)
+
+// Reemplazar documento completo
+db.usuarios.replaceOne(
+    { email: "juan@email.com" },
+    { nombre: "Juan", email: "nuevo@email.com" }
+)
+
+// Actualizar o insertar (upsert)
+db.usuarios.updateOne(
+    { email: "nuevo@email.com" },
+    { $set: { nombre: "Nuevo", edad: 20 } },
+    { upsert: true }
+)
+```
+
+### Eliminar documentos
+
+```javascript
+// Eliminar un documento
+db.usuarios.deleteOne({ email: "juan@email.com" })
+
+// Eliminar varios documentos
+db.usuarios.deleteMany({ activo: false })
+
+// Eliminar todos los documentos
+db.usuarios.deleteMany({})
+```
+
+---
+
+## Consultas avanzadas
+
+```javascript
+// Agregación (GROUP BY equivalente)
+db.usuarios.aggregate([
+    { $group: { _id: "$edad", total: { $sum: 1 } } }
+])
+
+// Proyecciones en agregación
+db.usuarios.aggregate([
+    { $match: { edad: { $gte: 25 } } },
+    { $group: { _id: null, promedio: { $avg: "$edad" } } }
+])
+
+// Lookup (JOIN equivalente)
+db.pedidos.aggregate([
+    {
+        $lookup: {
+            from: "usuarios",
+            localField: "usuario_id",
+            foreignField: "_id",
+            as: "usuario"
+        }
+    }
+])
+
+// Desenrollar arrays
+db.usuarios.aggregate([
+    { $unwind: "$tags" },
+    { $group: { _id: "$tags", total: { $sum: 1 } } }
+])
+```
+
+---
+
+## Índices
+
+```javascript
+// Crear índice simple
+db.usuarios.createIndex({ email: 1 }) // 1 = ascendente, -1 = descendente
+
+// Crear índice único
+db.usuarios.createIndex({ email: 1 }, { unique: true })
+
+// Crear índice compuesto
+db.usuarios.createIndex({ nombre: 1, edad: -1 })
+
+// Crear índice de texto
+db.usuarios.createIndex({ nombre: "text", descripcion: "text" })
+
+// Ver índices
+db.usuarios.getIndexes()
+
+// Eliminar índice
+db.usuarios.dropIndex("email_1")
+```
+
+---
+
+## Gestión de usuarios
+
+```javascript
+// Crear usuario administrador
+use admin
+db.createUser({
+    user: "admin",
+    pwd: "contraseña_segura",
+    roles: [{ role: "userAdminAnyDatabase", db: "admin" }]
+})
+
+// Crear usuario para una base de datos
+use mi_bd
+db.createUser({
+    user: "lector",
+    pwd: "contraseña",
+    roles: [{ role: "read", db: "mi_bd" }]
+})
+
+// Ver usuarios
+db.getUsers()
+
+// Eliminar usuario
+db.dropUser("lector")
+```
+
+---
+
+## Respaldo y restauración
+
+```bash
+# Backup de una base de datos
+mongodump --db nombre_bd --out /backup/
+
+# Backup con autenticación
+mongodump --username usuario --password pass --db nombre_bd --out /backup/
+
+# Restaurar base de datos
+mongorestore --db nombre_bd /backup/nombre_bd/
+
+# Backup de todas las bases de datos
+mongodump --out /backup/completo/
+
+# Restaurar todo
+mongorestore /backup/completo/
+```
+
+---
+
+## Comandos útiles desde terminal
+
+```bash
+# Ver estado del servicio
+sudo systemctl status mongod
+
+# Reiniciar MongoDB
+sudo systemctl restart mongod
+
+# Conectar y ejecutar comando
+mongosh --eval "use mi_bd; db.usuarios.find()"
+
+# Exportar a JSON
+mongoexport --db mi_bd --collection usuarios --out usuarios.json
+
+# Importar desde JSON
+mongoimport --db mi_bd --collection usuarios --file usuarios.json
+```
+
+---
+
+## Monitoreo
+
+```javascript
+// Estadísticas del servidor
+db.serverStatus()
+
+// Estadísticas de la base de datos
+db.stats()
+
+// Ver operaciones actuales
+db.currentOp()
+
+// Matar una operación
+db.killOp(opid)
+
+// Ver tamaño de colecciones
+db.usuarios.stats()
+
+// Ver todos los índices y su tamaño
+db.usuarios.aggregate([
+    { $indexStats: {} }
+])
+```
+
+---
+
+
+> En MongoDB, las bases de datos y colecciones se crean automáticamente al insertar el primer documento. Recuerda que los comandos en el shell de MongoDB usan sintaxis JavaScript, por lo que las funciones y objetos son similares.

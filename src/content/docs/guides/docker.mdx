@@ -1,0 +1,404 @@
+---
+title: Docker
+description: Comandos esenciales de Docker. Contenedores, imágenes y gestión de servicios.
+lastUpdated: 2026-06-26
+---
+
+Docker es una plataforma para desarrollar, enviar y ejecutar aplicaciones en contenedores. Aquí tienes los comandos esenciales.
+
+---
+
+## Instalación
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs>
+  <TabItem label="Debian/Ubuntu">
+
+```bash
+# Instalar dependencias
+sudo apt update
+sudo apt install ca-certificates curl
+
+# Añadir clave GPG oficial
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Añadir repositorio
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Instalar Docker
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Añadir usuario al grupo docker (evitar sudo)
+sudo usermod -aG docker $USER
+```
+
+  </TabItem>
+  <TabItem label="Arch Linux">
+
+```bash
+# Instalar Docker
+sudo pacman -S docker docker-compose
+
+# Añadir usuario al grupo docker
+sudo usermod -aG docker $USER
+
+# Habilitar y iniciar servicio
+sudo systemctl enable --now docker
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Gestión de imágenes
+
+```bash
+# Listar imágenes locales
+docker images
+
+# Descargar una imagen (pull)
+docker pull ubuntu:latest
+docker pull nginx:alpine
+
+# Eliminar una imagen
+docker rmi ubuntu:latest
+
+# Eliminar imágenes no usadas
+docker image prune
+
+# Construir una imagen desde Dockerfile
+docker build -t mi-imagen:1.0 .
+
+# Construir con contexto y etiqueta
+docker build -t mi-imagen:1.0 -f Dockerfile.prod .
+```
+
+---
+
+## Gestión de contenedores
+
+### Crear y ejecutar
+
+```bash
+# Crear y ejecutar contenedor (interactivo)
+docker run -it ubuntu:latest bash
+
+# Ejecutar en segundo plano (detached)
+docker run -d --name mi-nginx nginx:alpine
+
+# Ejecutar con puertos mapeados
+docker run -d -p 8080:80 --name web nginx:alpine
+
+# Ejecutar con volumen montado
+docker run -d -v /ruta/local:/ruta/container nginx:alpine
+
+# Ejecutar con variables de entorno
+docker run -d -e MYSQL_ROOT_PASSWORD=secret mysql:8
+```
+
+### Gestionar contenedores
+
+```bash
+# Listar contenedores en ejecución
+docker ps
+
+# Listar todos los contenedores (incluyendo detenidos)
+docker ps -a
+
+# Parar un contenedor
+docker stop nombre_contenedor
+
+# Iniciar un contenedor detenido
+docker start nombre_contenedor
+
+# Reiniciar un contenedor
+docker restart nombre_contenedor
+
+# Eliminar un contenedor
+docker rm nombre_contenedor
+
+# Eliminar un contenedor en ejecución (forzado)
+docker rm -f nombre_contenedor
+
+# Eliminar todos los contenedores detenidos
+docker container prune
+```
+
+### Ejecutar comandos
+
+```bash
+# Ejecutar comando en contenedor en ejecución
+docker exec -it nombre_contenedor bash
+
+# Ejecutar comando específico
+docker exec nombre_contenedor ls -la
+
+# Ver logs de un contenedor
+docker logs nombre_contenedor
+
+# Ver logs en tiempo real
+docker logs -f nombre_contenedor
+```
+
+---
+
+## Port mapping y volúmenes
+
+### Mapeo de puertos
+
+```bash
+# Mapear puerto específico
+docker run -d -p 8080:80 nginx
+
+# Mapear a puerto aleatorio
+docker run -d -p 80 nginx
+
+# Mapear varios puertos
+docker run -d -p 80:80 -p 443:443 nginx
+```
+
+### Volúmenes
+
+```bash
+# Montar un volumen (bind mount)
+docker run -d -v /home/user/data:/app/data nginx
+
+# Montar con permisos específicos
+docker run -d -v /home/user/data:/app/data:ro nginx  # solo lectura
+
+# Crear un volumen docker
+docker volume create mi-volumen
+
+# Listar volúmenes
+docker volume ls
+
+# Usar volumen nombrado
+docker run -d -v mi-volumen:/app/data nginx
+
+# Eliminar volumen
+docker volume rm mi-volumen
+
+# Eliminar volúmenes no usados
+docker volume prune
+```
+
+---
+
+## Docker Compose
+
+### Comandos básicos
+
+```bash
+# Levantar servicios
+docker compose up
+
+# Levantar en segundo plano
+docker compose up -d
+
+# Detener servicios
+docker compose down
+
+# Detener y eliminar volúmenes
+docker compose down -v
+
+# Ver logs
+docker compose logs
+
+# Ver logs de un servicio específico
+docker compose logs servicio
+
+# Reiniciar servicios
+docker compose restart
+
+# Ejecutar comando en un servicio
+docker compose exec servicio bash
+```
+
+### Ejemplo de docker-compose.yml
+
+```yaml
+version: '3.8'
+
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_USER: usuario
+      POSTGRES_DB: mi_bd
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+```
+
+---
+
+## Redes
+
+```bash
+# Listar redes
+docker network ls
+
+# Crear red
+docker network create mi-red
+
+# Crear red con driver bridge
+docker network create --driver bridge mi-red
+
+# Conectar contenedor a red
+docker network connect mi-red contenedor
+
+# Desconectar contenedor de red
+docker network disconnect mi-red contenedor
+
+# Eliminar red
+docker network rm mi-red
+
+# Ejecutar contenedor con red específica
+docker run -d --network mi-red nginx
+
+# Ver información de red
+docker network inspect mi-red
+```
+
+---
+
+## Limpieza y mantenimiento
+
+```bash
+# Ver espacio usado
+docker system df
+
+# Limpiar todo lo no usado (contenedores, imágenes, volúmenes)
+docker system prune
+
+# Limpiar incluyendo volúmenes (cuidado)
+docker system prune -a -v
+
+# Limpiar imágenes no usadas
+docker image prune -a
+
+# Limpiar contenedores detenidos
+docker container prune
+
+# Limpiar redes no usadas
+docker network prune
+
+# Limpiar volúmenes no usados
+docker volume prune
+```
+
+---
+
+## Información y diagnóstico
+
+```bash
+# Versión de Docker
+docker --version
+docker version
+
+# Información del sistema
+docker info
+
+# Ver estadísticas de contenedores
+docker stats
+
+# Ver procesos en un contenedor
+docker top nombre_contenedor
+
+# Inspeccionar detalles de un contenedor
+docker inspect nombre_contenedor
+
+# Ver historial de una imagen
+docker history mi-imagen
+```
+
+---
+
+## Almacenamiento de imágenes (Registry)
+
+```bash
+# Iniciar sesión en Docker Hub
+docker login
+
+# Etiquetar imagen para subir
+docker tag mi-imagen:1.0 usuario/mi-imagen:1.0
+
+# Subir imagen a Docker Hub
+docker push usuario/mi-imagen:1.0
+
+# Descargar imagen privada
+docker pull usuario/mi-imagen:1.0
+
+# Buscar imágenes en Docker Hub
+docker search nginx
+
+# Cerrar sesión
+docker logout
+```
+
+---
+
+## Comandos útiles adicionales
+
+```bash
+# Copiar archivos al contenedor
+docker cp archivo.txt nombre_contenedor:/ruta/destino
+
+# Copiar archivos desde el contenedor
+docker cp nombre_contenedor:/ruta/origen archivo.txt
+
+# Ver cambios en el sistema de archivos del contenedor
+docker diff nombre_contenedor
+
+# Pausar contenedor
+docker pause nombre_contenedor
+
+# Reanudar contenedor
+docker unpause nombre_contenedor
+
+# Esperar a que un contenedor termine
+docker wait nombre_contenedor
+```
+
+---
+
+## Alias útiles
+
+Añade a tu `~/.bashrc` o `~/.zshrc`:
+
+```bash
+# Alias comunes
+alias d='docker'
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+alias di='docker images'
+alias dex='docker exec -it'
+alias dstop='docker stop'
+alias drm='docker rm'
+alias drmi='docker rmi'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+alias dcl='docker compose logs -f'
+```
+
+---
+
+
+> Siempre que modifiques Dockerfile o docker-compose.yml, reconstruye con `docker compose up -d --build`. Usa `--no-cache` si tienes problemas con la caché.

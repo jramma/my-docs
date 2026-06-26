@@ -1,7 +1,10 @@
 ---
 title: ADB 
 description: The android Debug Bridge for Android Devices
+lastUpdated: 2026-06-26
 ---
+
+The android Debug Bridge for Android Devices
 
 ## 🔌 CONFIGURACIÓN INICIAL
 

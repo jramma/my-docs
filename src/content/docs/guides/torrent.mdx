@@ -1,0 +1,171 @@
+---
+title: Torrent
+description: Clientes BitTorrent para Linux. Descarga archivos .torrent de forma sencilla y segura.
+lastUpdated: 2026-06-26
+---
+
+En Linux puedes descargar archivos .torrent usando clientes de BitTorrent. Aquí tienes varias opciones:
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## **Clientes populares para Linux:**
+
+### 1. **Transmission** (Recomendado para principiantes)
+
+<Tabs>
+  <TabItem label="Debian/Ubuntu">
+
+```bash
+sudo apt install transmission-gtk
+```
+
+  </TabItem>
+  <TabItem label="Arch Linux">
+
+```bash
+sudo pacman -S transmission-gtk
+```
+
+  </TabItem>
+  <TabItem label="Fedora">
+
+```bash
+sudo dnf install transmission-gtk
+```
+
+  </TabItem>
+</Tabs>
+
+### 2. **qBittorrent** (Características avanzadas)
+
+<Tabs>
+  <TabItem label="Debian/Ubuntu">
+
+```bash
+sudo apt install qbittorrent
+```
+
+  </TabItem>
+  <TabItem label="Arch Linux">
+
+```bash
+sudo pacman -S qbittorrent
+```
+
+  </TabItem>
+  <TabItem label="Fedora">
+
+```bash
+sudo dnf install qbittorrent
+```
+
+  </TabItem>
+</Tabs>
+
+### 3. **Deluge** (Cliente modular)
+
+<Tabs>
+  <TabItem label="Debian/Ubuntu">
+
+```bash
+sudo apt install deluge
+```
+
+  </TabItem>
+  <TabItem label="Arch Linux">
+
+```bash
+sudo pacman -S deluge
+```
+
+  </TabItem>
+  <TabItem label="Fedora">
+
+```bash
+sudo dnf install deluge
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## **Proceso básico:**
+
+1. **Instala un cliente** (elige uno de arriba)
+2. **Abre el cliente**
+3. **Añade el archivo .torrent**:
+   - Método 1: Haz doble clic en el archivo .torrent
+   - Método 2: Arrástralo a la ventana del cliente
+   - Método 3: Usa "Añadir torrent" en el menú
+4. **Selecciona la ubicación de descarga**
+5. **Espera a que complete la descarga**
+
+---
+
+## **Desde terminal**:
+
+### Con transmission-cli:
+
+<Tabs>
+  <TabItem label="Debian/Ubuntu">
+
+```bash
+sudo apt install transmission-cli
+transmission-cli -w ~/Descargas archivo.torrent
+```
+
+  </TabItem>
+  <TabItem label="Arch Linux">
+
+```bash
+sudo pacman -S transmission-cli
+transmission-cli -w ~/Descargas archivo.torrent
+```
+
+  </TabItem>
+</Tabs>
+
+### Con aria2 (muy eficiente)
+
+<Tabs>
+  <TabItem label="Debian/Ubuntu">
+
+```bash
+sudo apt install aria2
+aria2c archivo.torrent
+```
+
+  </TabItem>
+  <TabItem label="Arch Linux">
+
+```bash
+sudo pacman -S aria2
+aria2c archivo.torrent
+```
+
+  </TabItem>
+  <TabItem label="Fedora">
+
+```bash
+sudo dnf install aria2
+aria2c archivo.torrent
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## **Consideraciones importantes**:
+- ✅ **Usa siempre torrents legales** (software libre, distribuciones Linux, contenido con licencia abierta)
+- ⚠️ **Respeta los derechos de autor**
+- 🔒 **Considera usar una VPN** para proteger tu privacidad
+- 📁 **Verifica la reputación** de los trackers y archivos
+
+---
+
+## **Para distribuciones específicas**:
+- **Ubuntu/Mint/Debian**: Transmission viene preinstalado en muchas versiones
+- **Fedora**: qBittorrent es una excelente opción
+- **Arch**: Tienes todas las opciones disponibles en AUR

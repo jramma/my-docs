@@ -1,0 +1,246 @@
+---
+title: PostgreSQL
+description: Comandos esenciales de PostgreSQL. Gestión de bases de datos, usuarios y consultas rápidas.
+lastUpdated: 2026-06-26
+---
+
+PostgreSQL es un sistema de base de datos relacional potente y de código abierto. Aquí tienes los comandos esenciales.
+
+---
+
+## Instalación
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs>
+  <TabItem label="Debian/Ubuntu">
+
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+```
+
+  </TabItem>
+  <TabItem label="Arch Linux">
+
+```bash
+sudo pacman -S postgresql
+# Inicializar el clúster
+sudo -iu postgres initdb -D /var/lib/postgres/data
+sudo systemctl enable --now postgresql
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Acceso a PostgreSQL
+
+```bash
+# Acceder como usuario postgres
+sudo -u postgres psql
+
+# Acceder con un usuario específico y base de datos
+psql -U usuario -d basedatos
+
+# Acceder desde terminal normal (si está configurado)
+psql
+```
+
+---
+
+## Comandos básicos dentro de psql
+
+```sql
+-- Ver todas las bases de datos
+\l
+
+-- Conectar a otra base de datos
+\c nombre_bd
+
+-- Ver todas las tablas en la base actual
+\dt
+
+-- Ver estructura de una tabla
+\d nombre_tabla
+
+-- Ver todos los usuarios/roles
+\du
+
+-- Salir de psql
+\q
+```
+
+---
+
+## Gestión de bases de datos
+
+```sql
+-- Crear base de datos
+CREATE DATABASE nombre_bd;
+
+-- Eliminar base de datos
+DROP DATABASE nombre_bd;
+
+-- Renombrar base de datos
+ALTER DATABASE nombre_bd RENAME TO nuevo_nombre;
+```
+
+---
+
+## Gestión de usuarios
+
+```sql
+-- Crear usuario (rol)
+CREATE USER nombre_usuario WITH PASSWORD 'contraseña';
+
+-- Crear usuario con privilegios de superusuario
+CREATE USER nombre_usuario WITH SUPERUSER PASSWORD 'contraseña';
+
+-- Eliminar usuario
+DROP USER nombre_usuario;
+
+-- Cambiar contraseña
+ALTER USER nombre_usuario WITH PASSWORD 'nueva_contraseña';
+
+-- Dar permisos de conexión a una base de datos
+GRANT CONNECT ON DATABASE nombre_bd TO nombre_usuario;
+
+-- Dar todos los privilegios en una base de datos
+GRANT ALL PRIVILEGES ON DATABASE nombre_bd TO nombre_usuario;
+```
+
+---
+
+## Gestión de tablas
+
+```sql
+-- Crear tabla
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    edad INTEGER,
+    creado TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Eliminar tabla
+DROP TABLE nombre_tabla;
+
+-- Renombrar tabla
+ALTER TABLE nombre_tabla RENAME TO nuevo_nombre;
+
+-- Añadir columna
+ALTER TABLE nombre_tabla ADD COLUMN nueva_columna TIPO_DATO;
+
+-- Eliminar columna
+ALTER TABLE nombre_tabla DROP COLUMN columna;
+
+-- Renombrar columna
+ALTER TABLE nombre_tabla RENAME COLUMN viejo TO nuevo;
+```
+
+---
+
+## Consultas básicas (CRUD)
+
+```sql
+-- INSERT (crear)
+INSERT INTO usuarios (nombre, email, edad) 
+VALUES ('Juan Pérez', 'juan@email.com', 30);
+
+-- SELECT (leer)
+SELECT * FROM usuarios;
+SELECT nombre, email FROM usuarios WHERE edad > 25;
+SELECT * FROM usuarios ORDER BY creado DESC LIMIT 10;
+
+-- UPDATE (actualizar)
+UPDATE usuarios SET edad = 31 WHERE nombre = 'Juan Pérez';
+
+-- DELETE (eliminar)
+DELETE FROM usuarios WHERE id = 1;
+```
+
+---
+
+## Consultas avanzadas
+
+```sql
+-- JOIN entre tablas
+SELECT u.nombre, p.titulo 
+FROM usuarios u
+JOIN publicaciones p ON u.id = p.usuario_id;
+
+-- Agrupación y conteo
+SELECT edad, COUNT(*) FROM usuarios GROUP BY edad;
+
+-- Búsqueda por texto
+SELECT * FROM usuarios WHERE nombre ILIKE '%juan%';
+
+-- Subconsultas
+SELECT * FROM usuarios 
+WHERE edad > (SELECT AVG(edad) FROM usuarios);
+```
+
+---
+
+## Respaldo y restauración
+
+```bash
+# Backup de una base de datos
+pg_dump -U usuario nombre_bd > backup.sql
+
+# Backup de todas las bases de datos
+pg_dumpall -U postgres > backup_completo.sql
+
+# Backup con formato personalizado (más rápido)
+pg_dump -U usuario -F c nombre_bd > backup.dump
+
+# Restaurar desde SQL
+psql -U usuario nombre_bd < backup.sql
+
+# Restaurar desde dump personalizado
+pg_restore -U usuario -d nombre_bd backup.dump
+```
+
+---
+
+## Comandos útiles desde terminal
+
+```bash
+# Ver versión de PostgreSQL
+psql --version
+
+# Verificar estado del servicio
+sudo systemctl status postgresql
+
+# Reiniciar el servicio
+sudo systemctl restart postgresql
+
+# Conectar y ejecutar comando sin entrar a psql
+psql -U usuario -d nombre_bd -c "SELECT * FROM usuarios;"
+```
+
+---
+
+## Monitoreo y rendimiento
+
+```sql
+-- Ver conexiones activas
+SELECT * FROM pg_stat_activity;
+
+-- Ver tamaño de una base de datos
+SELECT pg_database_size('nombre_bd');
+
+-- Ver tamaño de una tabla
+SELECT pg_size_pretty(pg_total_relation_size('nombre_tabla'));
+
+-- Ver consultas lentas (necesita habilitar logs)
+-- Configurar en postgresql.conf: log_min_duration_statement = 1000
+```
+
+---
+
+
+> Recuerda que los comandos SQL deben terminar con `;` para ejecutarse. Usa `\?` dentro de psql para ver todos los comandos especiales disponibles.

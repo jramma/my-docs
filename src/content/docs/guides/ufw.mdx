@@ -1,0 +1,157 @@
+---
+title: ufw
+description: Cortafuegos simple y seguro para Debian y Arch Linux. Protege tu servidor en pocos pasos.
+lastUpdated: 2026-06-26
+---
+
+UFW es una interfaz simplificada para `iptables` diseñada para ser fácil de usar. Es la opción ideal para mantener tu servidor seguro sin complicaciones, tanto en Debian como en Arch Linux.
+
+---
+
+## 1. Instalación
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs>
+  <TabItem label="Debian / Ubuntu">
+
+```bash
+sudo apt update
+sudo apt install ufw
+```
+
+  </TabItem>
+  <TabItem label="Arch Linux">
+
+```bash
+sudo pacman -S ufw
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 2. Configuración Inicial (Políticas por Defecto)
+
+Antes de activarlo, definimos las reglas base. Lo más seguro es denegar todo lo entrante y permitir lo saliente.
+
+```bash
+# Denegar todas las conexiones entrantes (por defecto)
+sudo ufw default deny incoming
+
+# Permitir todas las conexiones salientes
+sudo ufw default allow outgoing
+```
+
+---
+
+## 3. Permitir Conexiones Esenciales
+
+> [!IMPORTANT]
+> **¡No olvides permitir SSH!** Si estás configurando un servidor remoto y activas UFW sin permitir SSH, perderás el acceso.
+
+### SSH
+```bash
+sudo ufw allow ssh
+# O también por puerto específico:
+sudo ufw allow 22/tcp
+```
+
+### Web (HTTP/HTTPS)
+```bash
+sudo ufw allow http
+sudo ufw allow https
+# Alternativamente:
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+```
+
+---
+
+## 4. Reglas Avanzadas
+
+### Permitir rangos de puertos
+```bash
+sudo ufw allow 6000:6007/tcp
+sudo ufw allow 6000:6007/udp
+```
+
+### Permitir una IP específica
+```bash
+sudo ufw allow from 192.168.1.50
+```
+
+### Permitir una subred
+```bash
+sudo ufw allow from 192.168.1.0/24
+```
+
+---
+
+## 5. Gestión del Cortafuegos
+
+### Listar reglas con números
+Esto es muy útil para saber qué número de regla borrar.
+```bash
+sudo ufw status numbered
+```
+
+### Eliminar una regla
+```bash
+sudo ufw delete [número]
+# Ejemplo: sudo ufw delete 2
+```
+
+---
+
+## 6. Activación y Estado
+
+Una vez configurado todo, procedemos a activarlo:
+
+```bash
+# Activar el firewall
+sudo ufw enable
+
+# Desactivar (si fuera necesario)
+sudo ufw disable
+
+# Ver estado detallado
+sudo ufw status verbose
+```
+
+### En Arch Linux (servicio systemd)
+
+<Tabs>
+  <TabItem label="Debian / Ubuntu">
+
+El servicio se activa automáticamente al ejecutar `sudo ufw enable`.
+
+  </TabItem>
+<TabItem label="Arch Linux">
+
+Además de `sudo ufw enable`, necesitas habilitar el servicio systemd:
+
+```bash
+sudo systemctl enable ufw
+sudo systemctl start ufw
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 7. Logs (Registros)
+
+Para habilitar el registro de actividad y ver qué está bloqueando UFW:
+
+```bash
+sudo ufw logging on
+# Los logs se guardan normalmente en /var/log/ufw.log
+```
+
+---
+
+
+> Recuerda ejecutar `sudo ufw reload` después de realizar cambios manuales en los archivos de configuración si fuera necesario, aunque los comandos `allow` y `deny` se aplican instantáneamente.
