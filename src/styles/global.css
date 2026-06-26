@@ -20,7 +20,7 @@
     --overlay: oklch(0% 0 0 / 0.8);
     --shadow: 4px 4px 0px 0px var(--border);
     --chart-1: #FFBF00;
-    --chart-2: #0099FF;
+    --chart-2: var(--background);
     --chart-3: #FF7A05;
     --chart-4: #00D696;
     --chart-5: #7A83FF;
@@ -72,7 +72,7 @@
 
     /* Texto y fondos */
     --sl-color-text: var(--foreground);
-    --sl-color-text-accent: var(--chart-2);
+    --sl-color-text-accent: var(--chart-5);
     --sl-color-text-invert: var(--foreground);
     --sl-color-bg: var(--background);
     --sl-color-bg-nav: var(--secondary-background);
@@ -185,6 +185,9 @@ main {
     box-shadow: var(--shadow);
     transition: all 0.3s ease, transform 0.2s ease;
 }
+.sl-link-button.primary svg{
+    color: black;
+}
 
 .sl-link-button.primary:hover {
     transform: translateY(4px);
@@ -209,9 +212,6 @@ li a svg {
     margin-left: 0.25rem;
 }
 
-li a {
-    color: var(--foreground) !important;
-}
 
 button.sl-flex {
     background-color: transparent !important;
