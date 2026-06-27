@@ -7,22 +7,21 @@ lastUpdated: 2026-06-26
 ## Reproductores recomendados
 
 ### Euphonica (Rust)
-Ligero, rápido y minimalista.
 
-```bash
-# Instalación
-flatpak install flathub com.github.gi_lom.Euphonica
-```
+Ligero, rápido y minimalista. Tendrás que configurar MPD pero lo usan casi todos los reproductores multimedias modernos.
+
+(Enlace a la aplicación)[https://github.com/htkhiem/euphonica]
+
+
 
 ### Amberol (Rust)
+
 Reproductor simple sin biblioteca, solo arrastrar y reproducir.
 
-```bash
-# Instalación
-flatpak install flathub io.bassi.Amberol
-```
+(Repositorio de Amberol)[https://github.com/adamjatim/amberol]
 
 ### GNOME Music
+
 Reproductor integrado en GNOME, sencillo y funcional.
 
 ```bash
@@ -49,9 +48,12 @@ Yo uso scripts para revisar metadatos y mantener la librería ordenada.
 Ejemplo básico:
 ```bash
 #!/bin/bash
-# Revisar archivos sin etiquetas
-find ~/Música -name "*.mp3" -exec id3info {} \; | grep -E "Title|Artist"
+# Revisar archivos sin etiquetas (mp3, flac, ogg)
+find ~/Música -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.ogg" \) -exec echo "Revisar: {}" \;
 ```
+
+> Hice un proyecto en C para revisar metadatos, pero tenía problemas con memoria y caracteres especiales. Lo rehíce en Rust y funcionó bien. Hice un proyecto sencillo para ello [https://github.com/jramma/review-flac-mp3-metadata](https://github.com/jramma/review-flac-mp3-metadata)
+
 
 ---
 
@@ -59,7 +61,6 @@ find ~/Música -name "*.mp3" -exec id3info {} \; | grep -E "Title|Artist"
 
 | Reproductor | Características |
 |-------------|-----------------|
-| **Spotify** | Streaming (oficial o flatpak) |
 | **Rhythmbox** | Clásico, biblioteca completa |
 | **Clementine** | Múltiples fuentes, potente |
 | **Audacious** | Muy ligero (Winamp-like) |

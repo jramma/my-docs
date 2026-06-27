@@ -18,22 +18,20 @@ Conozco varios IDEs, he probado Cursor, Zen, VSCode, Eclipse... Aquí tienes mis
 - Ligero y rápido
 - Compatible con todos los lenguajes
 
-**Inconvenientes:**
+**Inconvenientes?:**
 - **No tiene sincronización online** (necesitas guardar la configuración localmente o usar un repo de dotfiles)
 - Menos extensiones en el marketplace oficial (pero compatibles con las de VSCode)
 
 **Instalación:**
-```bash
-# Debian/Ubuntu
-wget -qO- https://git.io/JJqxl | bash
 
-# Arch Linux
-sudo pacman -S vscodium
-```
+Sigue las instrucciones de la página oficial: [VSCodium](https://vscodium.com/)
+
 
 ---
 
 ### 2. IntelliJ IDEA (Backend)
+
+(Página web oficial)[https://www.jetbrains.com/idea/]
 
 **Ventajas:**
 - Excelente para backend (PHP, Java, Kotlin)
@@ -52,6 +50,8 @@ sudo pacman -S vscodium
 ---
 
 ### 3. Android Studio (Kotlin/Android)
+
+(Página web oficila)[https://developer.android.com/studio]
 
 **Ventajas:**
 - IDE oficial de Google para Android
@@ -76,128 +76,112 @@ sudo pacman -S vscodium
 **Inconvenientes:**
 - Telemetría de Microsoft (se puede desactivar)
 - Algunas extensiones son de pago
+- Copilot estará en tus commits por defecto
+- Tu código será _coauthored by copilot_.
+
+---
+¡Tienes toda la razón! Ha sido un error imperdonable no incluir **NeoVim** y **Nano** en la comparativa. Son dos herramientas fundamentales en el ecosistema del desarrollo, aunque con filosofías completamente opuestas.
+
+Aquí tienes la sección que faltaba, para completar el artículo:
 
 ---
 
-## Comparativa rápida
+## 5. NeoVim (El editor para programadores de verdad)
 
-| IDE | Lenguajes | Gratuito | Peso | Sincronización |
-|-----|-----------|----------|------|----------------|
-| **Codium** | Todos | ✅ | Ligero | ✅ (manual) |
-| **VSCode** | Todos | ✅ | Ligero | ❌ (Microsoft) |
-| **IntelliJ** | Java, Kotlin, PHP | ✅ (Community) | Pesado | ❌ (JetBrains) |
-| **Android Studio** | Kotlin, Java | ✅ | Muy pesado | ❌ (Google) |
-| **Eclipse** | Java, PHP | ✅ | Pesado | ✅ (manual) |
-| **Cursor** | Todos | ❌ (pago) | Ligero | ❌ |
-| **Zen** | Todos | ❌ (pago) | Ligero | ❌ |
+[Página web oficial](https://neovim.io/)
 
----
+**Ventajas:**
+- **Rendimiento brutal**: Arranca en milisegundos incluso con cientos de plugins
+- **Modal editing**: Una vez que aprendes Vim, editas a la velocidad del pensamiento
+- **Configuración en Lua**: Mucho más moderna y rápida que el Vimscript de Vim
+- **Ecosistema increíble**: LSP nativo, Treesitter, DAP (debugging), Telescope...
+- **Extensible**: Puedes convertirlo en un IDE completo sin perder fluidez
+- **Ctrl+Z**: Puedes suspenderlo y volver al terminal, y reanudarlo con `fg`
+- **Disponible en todas partes**: En cualquier servidor Linux viene instalado
 
-## Configuración de Codium (sincronización manual)
+**Inconvenientes:**
+- **Curva de aprendizaje empinada**: Las primeras semanas son frustrantes
+- **Configuración requiere tiempo**: No es "plug and play" como VSCode
+- **Atajos no intuitivos**: Debes memorizar combinaciones
+- **Comunidad más pequeña**: Aunque muy activa y apasionada
 
-### Opción 1: Git + dotfiles
-
-```bash
-# Crear repo de configuración
-mkdir ~/dotfiles
-cd ~/dotfiles
-git init
-
-# Copiar configuración de Codium
-cp ~/.config/VSCodium/User/settings.json .
-cp ~/.config/VSCodium/User/keybindings.json .
-
-# Subir a GitHub
-git add .
-git commit -m "Configuración Codium"
-git remote add origin https://github.com/tu-usuario/dotfiles.git
-git push -u origin main
-```
-
-### Opción 2: Settings Sync (extensión)
-
-Instalar la extensión **Settings Sync** y usar un Gist de GitHub para sincronizar.
+**Distribuciones populares (para empezar sin configurar):**
+- **LazyVim**: La más moderna y fácil de empezar
+- **AstroVim**: Muy completa y bien documentada
+- **NvChad**: Estilo minimalista pero potente
+- **Lunarvim**: Ideal para desarrolladores que vienen de VSCode
 
 ---
 
-## Extensiones esenciales (para Codium/VSCode)
+## 6. Nano (El editor minimalista de terminal)
 
-```json
-{
-  "extensiones": [
-    "GitLens",
-    "Prettier",
-    "ESLint",
-    "Live Server",
-    "Docker",
-    "Remote - SSH",
-    "Python",
-    "PHP Intelephense",
-    "Java Extension Pack",
-    "Markdown All in One",
-    "Material Icon Theme"
-  ]
-}
-```
+[Página web oficial](https://www.nano-editor.org/)
+
+**Ventajas:**
+- **Ultraligero**: Ocupa menos de 1MB
+- **Arranque instantáneo**: No hay tiempo de carga
+- **Curva de aprendizaje casi nula**: Los atajos se ven en la pantalla
+- **Viene instalado en prácticamente todos los sistemas Linux**
+- **Perfecto para ediciones rápidas**: Configurar un archivo, editar un script, etc.
+- **No necesita configuración**: Funciona bien por defecto
+
+**Inconvenientes:**
+- **Muy limitado**: Sin autocompletado, sin LSP, sin plugins
+- **Sin resaltado de sintaxis avanzado**: Básico comparado con otros editores
+- **No es productivo para proyectos grandes**
+- **Sin modo visual/selectivo**: Todo es línea por línea
+
+**Atajos básicos (Ctrl+letra):**
+- `Ctrl+O` - Guardar archivo
+- `Ctrl+X` - Salir (te pregunta si quieres guardar)
+- `Ctrl+W` - Buscar texto
+- `Ctrl+K` - Cortar línea
+- `Ctrl+U` - Pegar línea
+- `Ctrl+G` - Ayuda
+
+
+
+## Actualización de la tabla comparativa
+
+| IDE | Lenguajes | Gratuito | Peso | Curva aprendizaje | Sincronización |
+|-----|-----------|----------|------|-------------------|----------------|
+| **Codium** | Todos | ✅ | Ligero | Baja | ✅ (manual) |
+| **VSCode** | Todos | ✅ | Ligero | Baja | ❌ (Microsoft) |
+| **IntelliJ** | Java, Kotlin, PHP | ✅ (Community) | Pesado | Media | ❌ (JetBrains) |
+| **Android Studio** | Kotlin, Java | ✅ | Muy pesado | Media | ❌ (Google) |
+| **Eclipse** | Java, PHP | ✅ | Pesado | Media | ✅ (manual) |
+| **Cursor** | Todos | ❌ (pago) | Ligero | Baja | ❌ |
+| **Zen** | Todos | ❌ (pago) | Ligero | Baja | ❌ |
+| **NeoVim** | Todos (con plugins) | ✅ | Ultraligero | **Alta** | ✅ (dotfiles) |
+| **Nano** | Texto plano | ✅ | **< 1MB** | **Muy baja** | ❌ |
 
 ---
 
-## Recomendaciones por caso de uso
+## Recomendaciones actualizadas por caso de uso
 
 | Caso | Recomendación | Alternativa |
 |------|---------------|-------------|
 | **Backend (Java/Spring)** | IntelliJ IDEA | Eclipse |
 | **Backend (PHP/Laravel)** | IntelliJ IDEA | PHPStorm (de pago) |
 | **Desarrollo Android** | Android Studio | IntelliJ + plugins |
-| **Frontend (React/Vue)** | Codium/VSCode | Cursor |
-| **Scripting (Python/Node)** | Codium/VSCode | PyCharm (gratuito) |
-| **Administración** | Codium (SSH remoto) | VSCode |
-| **Cloud/Containers** | Codium (Dev Containers) | VSCode |
+| **Frontend (React/Vue)** | Codium/VSCode | NeoVim (si te atreves) |
+| **Scripting (Python/Node)** | Codium/VSCode | NeoVim con LSP |
+| **Administración de servidores** | **Nano** (rápido) | NeoVim (avanzado) |
+| **Edición remota por SSH** | **Nano** (siempre instalado) | Vim/NeoVim |
+| **Desarrollo en terminal pura** | **NeoVim** | Vim |
+| **Cloud/Containers** | Codium (Dev Containers) | NeoVim con Docker |
 
 ---
 
-## Guía de instalación rápida
+## Mi filosofía personal
 
-### Codium (Debian/Ubuntu)
-```bash
-# Instalar
-wget -qO- https://git.io/JJqxl | bash
-sudo apt install codium
+- **Nano** para ediciones rápidas en servidores, cambiar un archivo de configuración, revisar logs, o cuando no tengo mi entorno configurado.
 
-# Lanzar
-codium
-```
+- **NeoVim** para mi día a día cuando estoy en la terminal. Con LSP, Treesitter y Telescope es un editor de primera categoría. La inversión en aprenderlo se amortiza con creces.
 
-### IntelliJ IDEA (Ubuntu/Debian)
-```bash
-# Descargar desde web o usar snap
-sudo snap install intellij-idea-community --classic
-```
+- **Codium** para proyectos donde necesito colaborar o cuando quiero una interfaz más visual y extensiones específicas.
 
-### Android Studio
-```bash
-# Desde web oficial
-wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2023.1.1.28/android-studio-2023.1.1.28-linux.tar.gz
-tar -xzf android-studio-*.tar.gz
-cd android-studio/bin
-./studio.sh
-```
+- **IntelliJ** para backend profesional cuando el proyecto lo requiere.
 
----
 
-## Atajos útiles (comunes a todos los IDEs)
-
-| Acción | Codium/VSCode | IntelliJ |
-|--------|---------------|----------|
-| Buscar archivo | `Ctrl+P` | `Ctrl+Shift+N` |
-| Buscar en proyecto | `Ctrl+Shift+F` | `Ctrl+Shift+F` |
-| Ir a definición | `F12` / `Ctrl+Click` | `Ctrl+B` |
-| Renombrar símbolo | `F2` | `Shift+F6` |
-| Formatear código | `Ctrl+Shift+I` | `Ctrl+Alt+L` |
-| Terminal | `Ctrl+`` (backtick) | `Alt+F12` |
-| Comentario línea | `Ctrl+/` | `Ctrl+/` |
-| Buscar y reemplazar | `Ctrl+H` | `Ctrl+Shift+R` |
-
----
-
-> Si prefieres código abierto y control total, elige **Codium**. Si trabajas en backend profesionalmente, **IntelliJ Ultimate** merece la inversión. Para proyectos mixtos, **VSCode** con sincronización es la opción más cómoda.
+> Si quieres **control total y velocidad**, aprende **NeoVim**. Si necesitas **algo rápido y sencillo** en un servidor, usa **Nano**. Para el resto de casos, **Codium** es el equilibrio perfecto entre potencia, código abierto y facilidad de uso.

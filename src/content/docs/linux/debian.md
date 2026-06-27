@@ -4,7 +4,11 @@ description: Guía esencial de Debian. Instalación, comandos y configuración b
 lastUpdated: 2026-06-26
 ---
 
-## Instalación
+## Referencias
+
+- [Debian Wiki](https://wiki.debian.org/)
+- [Debian Installation Guide](https://www.debian.org/releases/stable/installmanual)
+- [Debian Package Management](https://wiki.debian.org/PackageManagement)
 
 ### Preparación
 ```bash

@@ -4,7 +4,13 @@ description: Guía esencial de Arch Linux. Instalación, comandos y configuraci�
 lastUpdated: 2026-06-26
 ---
 
-## Instalación
+
+## Referencias
+
+- [Arch Wiki](https://wiki.archlinux.org/)
+- [Installation Guide](https://wiki.archlinux.org/title/Installation_guide)
+- [General Recommendations](https://wiki.archlinux.org/title/General_recommendations)
+
 
 ### Preparación
 ```bash
