@@ -60,7 +60,7 @@
     --sl-color-gray-2: var(--foreground);
     --sl-color-gray-3: var(--border);
     --sl-color-gray-4: var(--border);
-    --sl-color-gray-5: var(--secondary-foreground);
+    --sl-color-gray-5: var(--chart-3);
     --sl-color-gray-6: var(--code-background);
     --sl-color-gray-7: var(--code-background);
     --sl-color-black: var(--background);
