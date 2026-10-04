@@ -1,5 +1,5 @@
 ---
-title: OGPD
+title: GDPR
 description: Mensaje para copiar y pegar para que eliminen tus datos
 lastUpdated: 2026-09-21
 ---
@@ -19,4 +19,3 @@ Please confirm once this has been done.
 Thank you
 
 ```
-
