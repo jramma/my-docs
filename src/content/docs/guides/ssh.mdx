@@ -83,6 +83,25 @@ ssh-copy-id usuario@servidor
 ssh -T git@github.com  # Para GitHub
 ```
 
+## Básicos conexión servidor
+
+```bash
+ssh <usuario_servidor>@<direccion_servidor>
+```
+*Dónde direccion_servidor puede ser una ip o url si hay configurado un _tunnel_.*
+
+Puedes crear un alias ssh para no  escribir el comando de arriba cada vez que te quieras conectar en `.ssh/config`.
+
+```bash
+
+Host <nombre_alias>
+  Port <puerto_ssh>
+  User <tu_usuario> # del servidor
+  HostName <ip_o_ruta_al_servidor>
+
+```
+
+
 ## Notas importantes
 
 - **Nunca compartas tu clave privada** (`id_rsa` o `id_ed25519`)
