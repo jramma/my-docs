@@ -125,19 +125,6 @@ git config --global alias.p '!f() { git commit -m "🚀 $1"; }; f'
 # Uso: git c "mensaje del commit"
 ```
 
----
-
-## Buenas prácticas
-
-- ✅ Commits atómicos (una cosa por commit)
-- ✅ Mensajes descriptivos y claros
-- ✅ Commits frecuentes
-- ✅ Revisar cambios antes de commit
-- ❌ No mezclar múltiples cambios en un commit
-- ❌ No hacer commits con mensajes vagos como "fix" o "update"
-
----
-
 ## Ejemplo de flujo
 
 ```bash
